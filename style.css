@@ -1,0 +1,631 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sea-deep:   #0a4a7a;
+  --sea-mid:    #1a6fa8;
+  --sea-light:  #3fb8e8;
+  --sea-foam:   #a8dff5;
+  --sand:       #e8c97e;
+  --sand-dark:  #d4a84b;
+  --sand-light: #f5dfa0;
+  --umbrella-std:  #c0bbb2;
+  --umbrella-gold: #f5c842;
+  --umbrella-green:#2ec06c;
+  --path-color: #b8a070;
+}
+
+html, body {
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--sand);
+  overflow-x: hidden;
+}
+
+/* ════════════════════════════
+   SEA
+════════════════════════════ */
+.sea {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg,
+    #042a4e 0%,
+    #0a4a7a 25%,
+    #1a6fa8 55%,
+    #3fb8e8 80%,
+    #6dd5f5 100%
+  );
+  overflow: hidden;
+}
+
+.sea-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.55);
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 2;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+/* Animazioni sfavillanti sull'acqua */
+.sea::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 60px,
+    rgba(255,255,255,0.04) 61px,
+    transparent 62px
+  );
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position-x: 0; }
+  100% { background-position-x: 120px; }
+}
+
+/* Sparkles / luccichii */
+.sea::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: -100%;
+  width: 300%;
+  height: 60%;
+  background: radial-gradient(ellipse 4px 2px at 50% 50%,
+    rgba(255,255,255,0.7) 0%,
+    transparent 100%
+  ) 20px 30px / 80px 40px,
+  radial-gradient(ellipse 3px 2px at 50% 50%,
+    rgba(255,255,255,0.5) 0%,
+    transparent 100%
+  ) 60px 10px / 100px 50px,
+  radial-gradient(ellipse 5px 2px at 50% 50%,
+    rgba(255,255,255,0.4) 0%,
+    transparent 100%
+  ) 10px 50px / 70px 30px;
+  animation: sparkle 4s linear infinite;
+}
+
+@keyframes sparkle {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(33.33%); }
+}
+
+/* Onde SVG */
+.waves-container {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+}
+
+.wave1 { fill: rgba(255,255,255,0.18); animation: wave1 5s ease-in-out infinite; }
+.wave2 { fill: rgba(255,255,255,0.12); animation: wave2 7s ease-in-out infinite reverse; }
+.wave3 { fill: rgba(255,255,255,0.22); animation: wave3 9s ease-in-out infinite; }
+
+@keyframes wave1 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-3%); }
+}
+@keyframes wave2 {
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  50%       { transform: translateX(4%) scaleY(1.1); }
+}
+@keyframes wave3 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-2%) scaleY(0.9); }
+}
+
+/* ════════════════════════════
+   BEACH LAYOUT
+════════════════════════════ */
+.beach {
+  position: relative;
+  display: flex;
+  gap: 0;
+  padding: 0;
+  min-height: 700px;
+  background: linear-gradient(180deg,
+    #f0d080 0%,
+    #e8c97e 40%,
+    #d9b860 100%
+  );
+}
+
+/* Sabbia texture */
+.beach::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle 1px at 15% 20%, rgba(180,140,40,0.3) 0%, transparent 100%),
+    radial-gradient(circle 1px at 45% 60%, rgba(180,140,40,0.2) 0%, transparent 100%),
+    radial-gradient(circle 1px at 75% 35%, rgba(180,140,40,0.25) 0%, transparent 100%),
+    radial-gradient(circle 1px at 90% 70%, rgba(180,140,40,0.2) 0%, transparent 100%);
+  background-size: 120px 90px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.beach-half {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 18px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Percorso centrale ── */
+.central-path {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 100%;
+  z-index: 10;
+  background: linear-gradient(180deg, #c9a85a 0%, #b8904a 100%);
+  border-left: 2px solid rgba(180,130,30,0.5);
+  border-right: 2px solid rgba(180,130,30,0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+/* ── Logo ── */
+.logo-badge {
+  background: white;
+  border-radius: 16px;
+  padding: 12px 10px 8px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  width: 96px;
+}
+
+.logo-heart {
+  color: #c0392b;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.logo-title {
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #8b1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+.logo-title span { color: #c0392b; }
+
+.logo-number {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #c0392b;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.logo-sub {
+  font-size: 0.4rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* ════════════════════════════
+   ROW LABELS & SECTION TAGS
+════════════════════════════ */
+.row-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8a6800;
+  margin-bottom: -4px;
+}
+
+.section-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5a4500;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 20px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.green-tag { color: #155724; background: rgba(46,192,108,0.18); }
+
+/* ════════════════════════════
+   UMBRELLAS
+════════════════════════════ */
+.umbrella-row {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.grid-umbrellas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.umbrella {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.umbrella:hover {
+  transform: scale(1.18);
+  z-index: 20;
+}
+
+/* Ombrellone standard – effetto 3D con ombre radiali */
+.umbrella.std {
+  background: radial-gradient(circle at 35% 35%,
+    #d4d0c8 0%,
+    #a8a49c 50%,
+    #7a776f 100%
+  );
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.2),
+    inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+/* Pattern a spicchi sull'ombrellone standard */
+.umbrella.std::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #bab6ae 0deg, #9a9690 45deg,
+    #bab6ae 45deg, #9a9690 90deg,
+    #bab6ae 90deg, #9a9690 135deg,
+    #bab6ae 135deg, #9a9690 180deg,
+    #bab6ae 180deg, #9a9690 225deg,
+    #bab6ae 225deg, #9a9690 270deg,
+    #bab6ae 270deg, #9a9690 315deg,
+    #bab6ae 315deg, #9a9690 360deg
+  );
+  opacity: 0.5;
+}
+
+.umbrella.std::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #6a675f;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Ombrellone prima fila – dorato */
+.umbrella.gold {
+  background: radial-gradient(circle at 35% 35%,
+    #ffe57a 0%,
+    #f5c842 50%,
+    #c89a10 100%
+  );
+  box-shadow:
+    0 3px 10px rgba(200,150,0,0.45),
+    inset 0 -2px 4px rgba(150,100,0,0.3),
+    inset 0 2px 5px rgba(255,240,150,0.5);
+}
+
+.umbrella.gold::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ffe57a 0deg, #d4aa20 45deg,
+    #ffe57a 45deg, #d4aa20 90deg,
+    #ffe57a 90deg, #d4aa20 135deg,
+    #ffe57a 135deg, #d4aa20 180deg,
+    #ffe57a 180deg, #d4aa20 225deg,
+    #ffe57a 225deg, #d4aa20 270deg,
+    #ffe57a 270deg, #d4aa20 315deg,
+    #ffe57a 315deg, #d4aa20 360deg
+  );
+  opacity: 0.5;
+}
+
+.umbrella.gold::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background: #a07800;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Ombrellone verde – piscina */
+.umbrella.green {
+  background: radial-gradient(circle at 35% 35%,
+    #5de899 0%,
+    #2ec06c 50%,
+    #1a8c4a 100%
+  );
+  box-shadow:
+    0 3px 10px rgba(30,120,60,0.4),
+    inset 0 -2px 4px rgba(10,80,30,0.3),
+    inset 0 2px 5px rgba(150,255,180,0.4);
+}
+
+.umbrella.green::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #5de899 0deg, #1f9e56 45deg,
+    #5de899 45deg, #1f9e56 90deg,
+    #5de899 90deg, #1f9e56 135deg,
+    #5de899 135deg, #1f9e56 180deg,
+    #5de899 180deg, #1f9e56 225deg,
+    #5de899 225deg, #1f9e56 270deg,
+    #5de899 270deg, #1f9e56 315deg,
+    #5de899 315deg, #1f9e56 360deg
+  );
+  opacity: 0.45;
+}
+
+.umbrella.green::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background: #105a2a;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Prima fila – dimensione più grande */
+.first-row .umbrella {
+  width: 40px;
+  height: 40px;
+}
+.first-row .umbrella::after { width: 7px; height: 7px; }
+
+/* ── Separatore ── */
+.separator-strip {
+  height: 10px;
+  background: rgba(180,130,30,0.2);
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
+/* ════════════════════════════
+   SERVICE BUTTONS
+════════════════════════════ */
+.services-block {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 6px;
+}
+
+.service-btn {
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.service-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.nursery    { background: linear-gradient(135deg, #f4a68e, #e8826a); }
+.mini-club  { background: linear-gradient(135deg, #e85555, #c0392b); }
+.area-giochi{ background: linear-gradient(135deg, #3dd680, #1f9e56); }
+.bistrot    { background: linear-gradient(135deg, #5badf0, #2980b9); }
+.reception  { background: linear-gradient(135deg, #6c757d, #495057); }
+
+/* ════════════════════════════
+   PISCINA
+════════════════════════════ */
+.pool-block {
+  margin-top: 10px;
+}
+
+.pool-water {
+  position: relative;
+  height: 100px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,
+    #1a9fd4 0%,
+    #0e7ab0 50%,
+    #0a5c8a 100%
+  );
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(14,90,140,0.5), inset 0 0 30px rgba(0,100,180,0.3);
+}
+
+.pool-label {
+  position: relative;
+  z-index: 5;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.pool-ripple {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  animation: ripple 3s ease-out infinite;
+}
+
+.pool-ripple.r2 {
+  animation-delay: 1.5s;
+  border-color: rgba(255,255,255,0.1);
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0.2); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Scintille sulla piscina */
+.pool-water::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent 0px,
+    transparent 14px,
+    rgba(255,255,255,0.04) 15px,
+    transparent 16px
+  );
+  animation: pool-shimmer 4s linear infinite;
+}
+
+@keyframes pool-shimmer {
+  0%   { background-position: 0 0; }
+  100% { background-position: 30px 30px; }
+}
+
+/* ════════════════════════════
+   LEGEND / FOOTER
+════════════════════════════ */
+.legend {
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 16px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.leg-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.green-dot { background: radial-gradient(circle at 35% 35%, #5de899, #1a8c4a); }
+.gold-dot  { background: radial-gradient(circle at 35% 35%, #ffe57a, #c89a10); }
+.std-dot   { background: radial-gradient(circle at 35% 35%, #d4d0c8, #7a776f); }
+.tenda-dot { background: radial-gradient(circle at 35% 35%, #c8c4bc, #888480); }
+
+.disclaimer {
+  flex-basis: 100%;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* ════════════════════════════
+   TOOLTIP su hover ombrellone
+════════════════════════════ */
+.umbrella[data-n]::before {
+  content: attr(data-n);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: rgba(0,0,0,0.75);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+  z-index: 30;
+}
+
+.umbrella[data-n]:hover::before {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+@media (max-width: 700px) {
+  .sea { height: 150px; }
+  .sea-label { font-size: 1.1rem; }
+  .central-path { width: 70px; }
+  .logo-badge { width: 60px; padding: 8px 5px 5px; }
+  .logo-number { font-size: 1.3rem; }
+  .umbrella { width: 22px; height: 22px; }
+  .first-row .umbrella { width: 26px; height: 26px; }
+  .umbrella-row { gap: 5px; }
+  .grid-umbrellas { gap: 5px; }
+  .service-btn { font-size: 0.6rem; padding: 7px 10px; }
+}
